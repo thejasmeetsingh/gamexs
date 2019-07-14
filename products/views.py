@@ -4,7 +4,7 @@ from . import models
 
 class ProductListView(views.ListView):
     context_object_name = 'products'
-    model = models.Product
+    queryset = models.Product.objects.all().order_by('category')
     template_name = 'products/product_list.html'
 
 
