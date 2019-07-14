@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="padding-top: 90px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h3 class="card-title">{{ product.name }}</h3>
+                    <p class="card-text text-justify">{{ product.product_clean_description }}</p>
+                </div>
+            </div>
+            <div class="card card-outline-secondary my-4">
+                <div class="card-header">
+                    Product Information
+                </div>
+                <div class="card-body">
+                    <p class="text-uppercase font-weight-bold">Price</p>
+                    <h5 class="text-muted">${{ product.price }}.99</h5>
+                    <hr>
+                    <p class="text-uppercase font-weight-bold">Release Date.</p>
+                    <h5 class="text-muted">{{ product.release_date }}</h5>
+                    <hr>
+                    <p class="text-uppercase font-weight-bold">Only for.</p>
+                    <h5 class="text-muted">{{ product.category }}</h5>
+                    <hr>
+                    <form action="">
+                        <div class="row">
+                            <div class="col-md-4 pr-0">
+                                <input class="form-control" type="number" min="1" max="{{ product.quantity }}"
+                                       placeholder="Quantity..." style="height: 38px;">
+                            </div>
+                            <div class="col-md-8">
+                                <button class="btn btn-success" type="submit" style="">Add to Cart</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <img class="card-img-top img-fluid" src="{{ product.image.url }}" alt="{{ product.name }}"
+                 style="height: 675px; margin-top: 22px;">
+        </div>
+    </div>
+</div>
+
+{% endblock %}

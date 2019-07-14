@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Gamexs {% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 80px;" xmlns:text-decoration="http://www.w3.org/1999/xhtml">
+    <div class="row">
+        {% if products %}
+            <div class="col-md-12 text-center text-white">
+                <h1 class="font-weight-light">Searched for "<b>{{ query }}</b>"</h1>
+            </div>
+            {% for product in products %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <a href="{% url 'product_detail' product.id %}"><img class="card-img-top img-fluid"
+                                                                             src="{{ product.image.url }}"
+                                                                             alt="{{ product.name }}"
+                                                                             style="width: 348; height: 416;"></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="{% url 'product_detail' product.id %}" style="text-decoration: none;">
+                                    {{ product.name}}
+                                </a>
+                            </h4>
+                            <h5>${{ product.price }}</h5>
+                            <p class="card-text text-justify">{{ product.product_summary }}</p>
+                        </div>
+                        <div class="card-footer">
+                            {% if product.quantity > 1 %}
+                            <h5><span class="badge badge-pill badge-success">In Stock.</span></h5>
+                            {% elif product.quantity == 1 %}
+                            <h5><span class="badge badge-pill badge-warning">Only 1 left.</span></h5>
+                            {% else %}
+                            <h5><span class="badge badge-pill badge-danger">Out of Stock!</span></h5>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-md-12 text-center text-white">
+                <h1 class="font-weight-light">Not found "<b>{{ query }}</b>"</h1>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
