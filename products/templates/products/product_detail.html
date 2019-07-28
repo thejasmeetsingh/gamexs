@@ -24,11 +24,13 @@
                     <p class="text-uppercase font-weight-bold">Only for.</p>
                     <h5 class="text-muted">{{ product.category }}</h5>
                     <hr>
-                    <form action="">
+                    <form method="POST" action="{% url 'cart_update' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
                         <div class="row">
                             <div class="col-md-4 pr-0">
-                                <input class="form-control" type="number" min="1" max="{{ product.quantity }}"
-                                       placeholder="Quantity..." style="height: 38px;">
+                                <input class="form-control" type="number" name="quantity" min="1"
+                                       max="{{ product.quantity }}" placeholder="Quantity..." style="height: 38px;">
                             </div>
                             <div class="col-md-8">
                                 <button class="btn btn-success" type="submit" style="">Add to Cart</button>
