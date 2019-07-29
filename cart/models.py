@@ -18,23 +18,24 @@ class CartManager(models.Manager):
                 cart_obj.user = request.user
                 cart_obj.save()
         else:
-            cart_obj = Cart.objects.new(user=request.user)
+            cart_obj = Cart.objects.new(request)
             new_obj = True
             request.session['cart_id'] = cart_obj.id
         return cart_obj, new_obj
 
-    def new(self, user=None):
+    def new(self, request):
         user_obj = None
-        if user is not None:
-            if user.is_authenticated:
-                user_obj = user
-        return self.model.objects.create(user=user_obj)
+        quantity = request.POST.get('quantity', 1)
+        if request.user is not None:
+            if request.user.is_authenticated:
+                user_obj = request.user
+        return self.model.objects.create(user=user_obj, product_quantity=quantity)
 
 
 class Cart(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     products = models.ManyToManyField(Product, blank=True)
-    product_quantity = models.PositiveIntegerField(default=1)
+    product_quantity = models.PositiveIntegerField()
     sub_total = models.DecimalField(default=0.00, max_digits=100, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=100, decimal_places=2)  # total amount of all product
     updated = models.DateTimeField(auto_now=True)
@@ -57,7 +58,7 @@ def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
 
 
 def pre_save_cart_receiver(sender, instance, *args, **kwargs):
-    instance.total = instance.sub_total * instance.product_quantity
+    instance.total = instance.sub_total * float(instance.product_quantity)
 
 
 m2m_changed.connect(m2m_changed_cart_receiver, sender=Cart.products.through)
