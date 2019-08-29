@@ -1,72 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     {% load static %}
-    <meta charset="UTF-8">
-    <link rel="icon" href="{% static 'img/icon.png' %}" alt="icon">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
-          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/gamexs.css' %}">
+    <meta charset="UTF-8" />
+    <link rel="icon" href="{% static 'img/icon.png' %}" alt="icon" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+      integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'css/gamexs.css' %}" />
     <title>{% block title %}{% endblock %}</title>
-</head>
-<body class="bg-dark">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-        <a class="navbar-brand" href="{% url 'home' %}"><img class="img-fluid" src="{% static '/img/logo.png' %}"
-                                                              alt="logo"
-                                                              width="200px"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+  </head>
+  <body class="bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}"
+          ><img
+            class="img-fluid"
+            src="{% static '/img/logo.png' %}"
+            alt="logo"
+            width="200px"
+        /></a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarResponsive"
+          aria-controls="navbarResponsive"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <div class="nav-link">
-                        <form action="{% url 'search' %}" method="GET">
-                            <input class="mt-1" type="search" onfocus="this.placeholder='Search Games...'"
-                                   onblur="this.placeholder='Search'" placeholder="Search" style="height: 20px;"
-                                    name="q">
-                        </form>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cart_home' %}">
-                        <button class="mt-1 btn btn-outline-success"><i class="fas fa-shopping-cart"></i>
-                            ({% block cart %}{% endblock%})
-                        </button>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <button class="mt-1 btn btn-outline-success">Login</button>
-                    </a>
-                </li>
-            </ul>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <div class="nav-link">
+                <form action="{% url 'search' %}" method="GET">
+                  <input
+                    class="mt-1"
+                    type="search"
+                    onfocus="this.placeholder='Search Games...'"
+                    onblur="this.placeholder='Search'"
+                    placeholder="Search"
+                    style="height: 20px;"
+                    name="q"
+                  />
+                </form>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'cart' %}">
+                <button class="mt-1 btn btn-outline-success">
+                  <i id="cart" class="fas fa-shopping-cart"></i>
+                </button>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <button class="mt-1 btn btn-outline-success">Login</button>
+              </a>
+            </li>
+          </ul>
         </div>
-    </div>
-</nav>
+      </div>
+    </nav>
 
-<main>
-    {% block content %}{% endblock %}
-</main>
+    <main>
+      {% block content %}{% endblock %}
+    </main>
 
-<footer class="text-muted bg-faded">
-    <div class="container text-center text-white">
-        <hr>
+    <footer class="footer mt-auto py-3 text-muted bg-faded">
+      <div class="container text-center text-white">
+        <hr />
         <p>© Jasmeet Singh {% now "Y" %}</p>
-    </div>
-</footer>
-</body>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+      </div>
+    </footer>
+  </body>
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    if (sessionStorage.length == null) {
+      document.getElementById("cart").innerHTML = ` ${0}`;
+    } else {
+      document.getElementById("cart").innerHTML = ` ${sessionStorage.length}`;
+    }
+  </script>
+  {% block script %}{% endblock %}
 </html>

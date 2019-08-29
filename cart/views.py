@@ -1,30 +1,32 @@
 from django.shortcuts import render, redirect
-from django.core.exceptions import ObjectDoesNotExist
 from products.models import Product
-from .models import Cart
+from .models import Cart, Item
 
 
-def cart_home(request):
-    try:
-        cart_obj = Cart.objects.get(pk=request.session.get('cart_id'))
-    except Cart.DoesNotExist:
-        cart_obj = False
-    if cart_obj:
-        return render(request, 'cart/cart_home.html', {'cart': cart_obj})
-    else:
-        return render(request, 'cart/cart_empty.html')
-    
+def cart_items(request):
+    my_cart = Cart.objects.new_or_get(request)
+    my_cart_items = Item.objects.filter(cart=my_cart)
+    return render(request, 'cart/cart.html', {'my_cart': my_cart, 'my_cart_items': my_cart_items})
 
-def cart_get_or_create(request):
-    product_id = request.POST['product_id']
-    if product_id is not None:
-        try:
-            products_obj = Product.objects.get(id=product_id)
-        except ObjectDoesNotExist:
-            return redirect('cart_home')
-        cart_obj, new_obj = Cart.objects.new_or_get(request)  # get a existing cart or create a new one
-        if products_obj in cart_obj.products.all():
-            cart_obj.products.remove(products_obj)
-        else:
-            cart_obj.products.add(products_obj)
-    return redirect('cart_home')
+
+def cart_create_items(request):
+    if request.POST:
+        product_id = request.POST.get('product_id')
+        product_quantity = int(request.POST.get('product_quantity'))
+        my_cart = Cart.objects.new_or_get(request)
+        product_obj = Product.objects.get(id=product_id)
+
+        if not Item.objects.filter(product=product_obj).exists():
+            Item.objects.create(cart=my_cart, product=product_obj, quantity=product_quantity)
+
+        return redirect('cart')
+
+
+def cart_delete_item(request):
+    if request.POST:
+        product_id = request.POST.get('item')
+        product_obj = Product.objects.get(id=product_id)
+        if Item.objects.filter(product=product_obj).exists():
+            item_obj = Item.objects.get(product=product_obj)
+            item_obj.delete()
+        return redirect('cart')
