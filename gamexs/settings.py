@@ -40,7 +40,8 @@ INSTALLED_APPS = [
 
     'products.apps.ProductsConfig',
     'search.apps.SearchConfig',
-    'cart.apps.CartConfig'
+    'cart.apps.CartConfig',
+    'order.apps.OrderConfig'
 ]
 
 MIDDLEWARE = [
@@ -79,12 +80,8 @@ WSGI_APPLICATION = 'gamexs.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gamexs-db',
-        'USER': 'postgres',
-        'PASSWORD': 'J@3,jasmeet',
-        'HOST': '127.0.0.1',
-        'PORT': '5432'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
     }
 }
 
