@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 from products.models import Product
 from .models import Cart, Item
@@ -34,6 +35,7 @@ def cart_delete_item(request):
         return redirect('cart')
 
 
+@login_required
 def checkout_home(request):
     cart_obj, cart_created = Cart.objects.new_or_get(request)
     order_obj = None

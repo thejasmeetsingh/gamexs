@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container" style="padding-left: 250px; padding-top: 120px">
+    <div class="card" style="width: 650px; margin-bottom: 80px;">
+        <img src="{% static 'img/background.jpg' %}" class="card-img-top" alt="Background">
+        <h5 class="card-header">Log in to Gamexs</h5>
+        <div class="card-body">
+            {% if error %}
+                <p class="font-weight-normal">{{ error }}</p>
+            {% endif %}
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="form-group pt-3">
+                    <label for="email">Username:</label>
+                    <input type="text" class="form-control" id="email" aria-describedby="emailHelp"
+                           name="name"
+                           style="width: 300px" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password"
+                           style="width: 300px"
+                           required>
+                </div>
+                <input type="submit" class="btn btn-outline-success btn-lg" style="border-radius: 12px"
+                       value="Login">
+            </form>
+            <p class="pt-3">New to Gamexs? <a class="text-success" href="{% url 'signup' %}"
+                                              style="text-decoration: none;">Create an account</a></p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

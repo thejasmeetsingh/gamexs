@@ -1,12 +1,10 @@
 from django.db import models
-from django.conf import settings
 from products.models import Product
 
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.utils.datetime_safe import datetime
-
-User = settings.AUTH_USER_MODEL
+from django.contrib.auth.models import User
 
 
 class CartManager(models.Manager):

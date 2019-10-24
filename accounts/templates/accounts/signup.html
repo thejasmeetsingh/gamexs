@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Signup{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container" style="padding-left: 250px; padding-top: 120px">
+    <div class="card" style="width: 700px; margin-bottom: 80px;">
+        <img src="{% static 'img/background1.jpg' %}" class="card-img-top" alt="Background">
+        <h5 class="card-header">Create an account in Gamexs</h5>
+        <div class="card-body">
+            {% if error %}
+                <p class="font-weight-normal">{{ error }}</p>
+            {% endif %}
+            <form method="POST" action="{% url 'signup' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name">Username:</label>
+                            <input type="text" class="form-control" id="name"
+                                   name="name" placeholder="e.g: John"
+                                   style="width: 300px" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                                   name="email" placeholder="abc@gmail.com"
+                                   style="width: 300px" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password"
+                                   style="width: 300px"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="confirm_password">Confirm Password:</label>
+                            <input type="password" class="form-control" id="confirm_password"
+                                   name="confirm_password"
+                                   style="width: 300px" required>
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" class="btn btn-outline-success btn-lg" style="border-radius: 12px"
+                       value="Create Account">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
