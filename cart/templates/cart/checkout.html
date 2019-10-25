@@ -10,7 +10,7 @@
 <div class="container" style="padding-left: 180px; padding-top: 120px">
     <div class="card" style="width: 800px; margin-bottom: 80px;">
         <img src="{% static 'img/background2.jpg' %}" class="card-img-top" alt="Background">
-        <h5 class="card-header text-center">Shipping Address</h5>
+        <h5 class="card-header text-center font-weight-light">Shipping Address</h5>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
@@ -30,7 +30,7 @@
 <div class="container" style="padding-left: 180px; padding-top: 120px">
     <div class="card" style="width: 800px; margin-bottom: 80px;">
         <img src="{% static 'img/background2.jpg' %}" class="card-img-top" alt="Background">
-        <h5 class="card-header">Billing Address</h5>
+        <h5 class="card-header text-center font-weight-light">Billing Address</h5>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
@@ -46,15 +46,49 @@
     </div>
 </div>
 {% else %}
-<div class="container text-center text-white" style="padding-top: 90px">
-    <h1>Checkout</h1>
-    <p>Cart Total: {{ object.cart.total }}</p>
-    <p>Shipping Total: {{ object.shipping_total }}</p>
-    <p>Order Total: {{ object.total }}</p>
-    <form action="{% url 'checkout' %}" method="POST">
-        {% csrf_token %}
-        <input class="btn btn-outline-success btn-lg" style="border-radius: 12px" type="submit" value="Buy">
-    </form>
+<div class="container text-center text-white" style="padding-top: 90px; padding-left: 180px;">
+    <div class="card text-dark" style="width: 800px;">
+        <img src="{% static 'img/background3.jpg' %}" class="card-img-top rounded" alt="Background"
+             style="height: 350px;">
+        <h1 class="card-header font-weight-light">Checkout</h1>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th scope="row">Cart Items</th>
+                    {% for item in items %}
+                    <td><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="width: 100px;"></td>
+                    {% if not forloop.last %}{% endif %}{% endfor %}
+                </tr>
+                <tr>
+                    <th scope="row">Shipping Address</th>
+                    <td colspan="{{ object.cart.items }}">{{ object.shipping_address.get_address }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Billing Address</th>
+                    <td colspan="{{ object.cart.items }}">{{ object.billing_address.get_address }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Cart Total</th>
+                    <td colspan="{{ object.cart.items }}">{{ object.cart.total }}</td>
+                </tr>
+                <tr>
+                <tr>
+                    <th scope="row">Shipping Total</th>
+                    <td colspan="{{ object.cart.items }}">{{ object.shipping_total }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Order Total</th>
+                    <td colspan="{{ object.cart.items }}">{{ object.total }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <form action="{% url 'checkout' %}" method="POST">
+                {% csrf_token %}
+                <input class="btn btn-outline-success btn-lg" style="border-radius: 12px; width: 100px;" type="submit" value="Buy">
+            </form>
+        </div>
+    </div>
 </div>
 {% endif %}
 

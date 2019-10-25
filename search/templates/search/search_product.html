@@ -24,7 +24,7 @@
                                     {{ product.name}}
                                 </a>
                             </h4>
-                            <h5>${{ product.price }}</h5>
+                            <h5>₹ {{ product.price }}</h5>
                             <p class="card-text text-justify">{{ product.product_summary }}</p>
                         </div>
                         <div class="card-footer">
@@ -40,7 +40,7 @@
                 </div>
             {% endfor %}
         {% else %}
-            <div class="col-md-12 text-center text-white">
+            <div class="col-md-12 text-center text-white" style="margin-top: 200px; margin-bottom: 250px;">
                 <h1 class="font-weight-light">Not found "<b>{{ query }}</b>"</h1>
             </div>
         {% endif %}

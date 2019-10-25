@@ -9,7 +9,7 @@
 >
     {% if my_cart_items %}
     <div class="d-flex flex-column">
-        <h2 class="pt-5 text-white">Shopping Cart</h2>
+        <h2 class="pt-5 text-white font-weight-light">Shopping Cart</h2>
         <div>
             <table class="table table-borderless table-hover text-white text-justify">
                 <thead>
@@ -32,7 +32,7 @@
                                                        style="width: 100px;"></div>
                                 <div class="d-flex flex-column">
                                     <h4>
-                                        <a class="text-white" href="{% url 'product_detail' item.product.id %}">
+                                        <a class="text-white font-weight-light" href="{% url 'product_detail' item.product.id %}">
                                             {{ item.product.name }}
                                         </a>
                                     </h4>
@@ -79,7 +79,7 @@
     <a href="{% url 'checkout' %}" style="text-decoration: none;"><button class="btn btn-lg btn-outline-success">Checkout</button></a>
     {% else %}
     <div class="container text-center" style="padding-top: 170px; padding-bottom: 270px;">
-        <h1 class="text-white">Cart is Empty...</h1>
+        <h1 class="text-white font-weight-light">Cart is Empty...</h1>
     </div>
     {% endif %}
 </div>

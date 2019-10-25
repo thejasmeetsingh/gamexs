@@ -43,6 +43,7 @@ def cart_delete_item(request):
 def checkout_home(request):
     cart_obj, cart_created = Cart.objects.new_or_get(request)
     order_obj = None
+    items = None
     if cart_created:
         redirect('cart')
 
@@ -57,6 +58,7 @@ def checkout_home(request):
     if billing_profile is not None:
         address_qs = Address.objects.filter(billing_profile=billing_profile)
         order_obj, order_obj_created = Order.objects.new_or_get(billing_profile, cart_obj)
+        items = Item.objects.filter(cart=cart_obj)
         if shipping_address_id:
             order_obj.shipping_address = Address.objects.get(id=shipping_address_id)
             del request.session['shipping_address_id']
@@ -70,10 +72,13 @@ def checkout_home(request):
         is_done = order_obj.check_done()
         if is_done:
             order_obj.mark_paid()
+            Item.objects.all().delete()
+            Cart.objects.all().delete()
             return redirect('success')
 
     context = {
         'object': order_obj,
+        'items': items,
         'billing_profile': billing_profile,
         'address_form': address_form,
         'addresses': address_qs
