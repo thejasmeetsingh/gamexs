@@ -1,0 +1,23 @@
+{% if addresses.exists %}
+
+<form method="POST" action="{% if action_url %}{{ action_url }}{% endif %}">
+    {% csrf_token %}
+    {% if next_url %}
+    <input type="hidden" name="next" value="{{ next_url }}">
+    {% endif %}
+    {% if address_type %}
+    <input type="hidden" name="address_type" value="{{ address_type }}">
+    {% endif %}
+
+    {% for address in addresses %}
+    <label for="address-{{ address.id }}">
+        <input type="radio" name="address" id="address-{{ address.id }}" value="{{ address.id }}">
+        {{ address.address_line_1 }}
+    </label>
+    <br>
+    {% endfor %}
+    <input type="submit" class="btn btn-outline-success btn-lg ml-3" style="border-radius: 12px"
+           value="Use Address">
+</form>
+
+{% endif %}

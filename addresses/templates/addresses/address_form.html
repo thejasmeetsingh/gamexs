@@ -1,0 +1,37 @@
+{% load crispy_forms_tags %}
+
+<form method="POST" action="{% if action_url %}{{ action_url }}{% endif %}">
+    {% csrf_token %}
+    {% if next_url %}
+    <input type="hidden" name="next" value="{{ next_url }}">
+    {% endif %}
+    {% if address_type %}
+    <input type="hidden" name="address_type" value="{{ address_type }}">
+    {% endif %}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form.address_line_1 | as_crispy_field }}
+        </div>
+        <div class="col-md-6">
+            {{ form.address_line_2 | as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {{ form.city | as_crispy_field }}
+        </div>
+        <div class="col-md-6">
+            {{ form.state | as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {{ form.postal_or_zip_code | as_crispy_field }}
+        </div>
+        <div class="col-md-6">
+            {{ form.country | as_crispy_field }}
+        </div>
+    </div>
+    <input type="submit" class="btn btn-outline-success btn-lg" style="border-radius: 12px"
+           value="Submit">
+</form>

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+
+<div class="container text-center text-white" style="padding-top: 90px">
+    <h1 class="mb-5">Success..!!</h1>
+    <button onclick="function success() {sessionStorage.clear()} success();" class="btn btn-outline-success btn-lg">
+        <a style="text-decoration: none; color: white;" href="{% url 'home' %}">Buy More</a>
+    </button>
+</div>
+
+{% endblock %}
