@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from products.models import Product
 from .models import Cart, Item
 from order.models import Order
+from billing.models import BillingProfile
 
 
 def cart_items(request):
@@ -41,6 +42,15 @@ def checkout_home(request):
     order_obj = None
     if cart_created:
         redirect('cart')
-    else:
-        order_obj, new_order_obj = Order.objects.get_or_create(cart=cart_obj)
-    return render(request, 'cart/checkout.html', {'object': order_obj})
+
+    billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
+
+    if billing_profile is not None:
+        order_obj, order_obj_created = Order.objects.new_or_get(billing_profile, cart_obj)
+
+    context = {
+        'object': order_obj,
+        'billing_profile': billing_profile
+    }
+
+    return render(request, 'cart/checkout.html', context)

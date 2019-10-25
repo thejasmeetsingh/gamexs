@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+{% endblock%}
+
+{% block script %}
+    <script>
+        setTimeout(function() {sessionStorage.clear(); location.href='http://127.0.0.1:8000';}, 0001);
+    </script>
+{% endblock %}

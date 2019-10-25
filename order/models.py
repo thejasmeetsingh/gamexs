@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models.signals import pre_save, post_save
 
 from cart.models import Cart
+from billing.models import BillingProfile
 from gamexs.utils import order_id_generator
 
 ORDER_STATUS_CHOICES = (
@@ -12,15 +13,30 @@ ORDER_STATUS_CHOICES = (
 )
 
 
+class OrderManager(models.Manager):
+    def new_or_get(self, billing_profile, cart_obj):
+        created = False
+        qs = self.get_queryset().filter(billing_profile=billing_profile, cart=cart_obj, active=True)
+        if qs.count() == 1:
+            obj = qs.first()
+        else:
+            obj = self.model.objects.create(billing_profile=billing_profile, cart=cart_obj)
+            created = True
+        return obj, created
+
+
 class Order(models.Model):
     order_id = models.CharField(max_length=250, blank=True)
-    # billing_profile
+    billing_profile = models.ForeignKey(BillingProfile, null=True, blank=True, on_delete=models.CASCADE)
     # shipping_address
     # billing_address
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     status = models.CharField(max_length=250, default='created', choices=ORDER_STATUS_CHOICES)
     shipping_total = models.IntegerField(default=50)
     total = models.IntegerField(default=0)
+    active = models.BooleanField(default=True)
+
+    objects = OrderManager()
 
     def __str__(self):
         return self.order_id
@@ -37,6 +53,9 @@ class Order(models.Model):
 def pre_save_create_order_id(sender, instance, *args, **kwargs):
     if not instance.order_id:
         instance.order_id = order_id_generator(instance)
+    qs = Order.objects.filter(cart=instance.cart).exclude(billing_profile=instance.billing_profile)
+    if qs.exists():
+        qs.update(active=False)
 
 
 def post_save_cart_total(sender, instance, created, *args, **kwargs):

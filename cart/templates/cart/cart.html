@@ -76,7 +76,7 @@
         </div>
         <h4 class="mr-4 pr-5 text-right text-white">Total ({% if my_cart.items == 1 %} {{ my_cart.items }} item {% else %} {{ my_cart.items }} items {% endif %}): ₹ {{ my_cart.total }}</h4>
     </div>
-    <a href="{% url 'checkout' %}" style="text-decoration: none;"><button class="btn btn-lg btn-outline-success">Proceed to Buy</button></a>
+    <a href="{% url 'checkout' %}" style="text-decoration: none;"><button class="btn btn-lg btn-outline-success">Checkout</button></a>
     {% else %}
     <div class="container text-center" style="padding-top: 170px; padding-bottom: 270px;">
         <h1 class="text-white">Cart is Empty...</h1>
