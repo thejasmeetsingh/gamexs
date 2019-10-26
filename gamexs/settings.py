@@ -49,6 +49,9 @@ INSTALLED_APPS = [
     'crispy_forms'
 ]
 
+STRIPE_SECRET_KEY = "sk_test_NriafkzT6rslL62LgZ6yf9UE00lGBuuGIN"
+STRIPE_PUB_KEY = "pk_test_f5DXLBzIlKRIUvm510nNHdd300FSNHSBb3"
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 from products.models import Product
 from .models import Cart, Item
@@ -8,6 +9,11 @@ from billing.models import BillingProfile
 from addresses.models import Address
 
 from addresses.forms import AddressForm
+
+import stripe
+STRIPE_SECRET_KEY = getattr(settings, "STRIPE_SECRET_KEY", "sk_test_NriafkzT6rslL62LgZ6yf9UE00lGBuuGIN")
+STRIPE_PUB_KEY = getattr(settings, "STRIPE_PUB_KEY", "pk_test_f5DXLBzIlKRIUvm510nNHdd300FSNHSBb3")
+stripe.api_key = STRIPE_SECRET_KEY
 
 
 def cart_items(request):
@@ -54,6 +60,7 @@ def checkout_home(request):
 
     billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
     address_qs = None
+    has_card = None
 
     if billing_profile is not None:
         address_qs = Address.objects.filter(billing_profile=billing_profile)
@@ -67,21 +74,29 @@ def checkout_home(request):
             del request.session['billing_address_id']
         if shipping_address_id or billing_address_id:
             order_obj.save()
+        has_card = billing_profile.has_card()
 
     if request.method == 'POST':
-        is_done = order_obj.check_done()
-        if is_done:
-            order_obj.mark_paid()
-            Item.objects.all().delete()
-            Cart.objects.all().delete()
-            return redirect('success')
+        is_prepared = order_obj.check_done()
+        if is_prepared:
+            did_charge, charge_msg = billing_profile.charge(order_obj)
+            if did_charge:
+                order_obj.mark_paid()
+                Item.objects.all().delete()
+                Cart.objects.all().delete()
+                return redirect('success')
+            else:
+                print(charge_msg)
+                return redirect('checkout')
 
     context = {
         'object': order_obj,
         'items': items,
         'billing_profile': billing_profile,
         'address_form': address_form,
-        'addresses': address_qs
+        'addresses': address_qs,
+        'has_card': has_card,
+        'publish_key': STRIPE_PUB_KEY
     }
 
     return render(request, 'cart/checkout.html', context)

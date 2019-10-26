@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Payment Method{% endblock %}
+
+{% block content %}
+
+<div class="container text-center text-white" style="padding-top: 200px; margin-bottom: 180px;">
+    <h1 class="font-weight-light mb-4">Add Payment Method</h1>
+    <div class="col-10 col-md-6 mx-auto">
+        <div class="stripe-payment-form" data-token="{{ publish_key }}" data-next-url="{% if next_url %}{{ next_url }}{% endif %}" data-btn-title="Add New Method"></div>
+    </div>
+</div>
+
+{% endblock %}

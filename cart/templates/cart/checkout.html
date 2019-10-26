@@ -46,6 +46,14 @@
     </div>
 </div>
 {% else %}
+{% if not has_card %}
+<div class="container text-center text-white" style="padding-top: 200px; margin-bottom: 180px;">
+    <h1 class="font-weight-light mb-4">Add Payment Method</h1>
+    <div class="col-10 col-md-6 mx-auto">
+        <div class="stripe-payment-form" data-token="{{ publish_key }}" data-next-url="{{ request.build_absolute_uri }}" data-btn-title="Add Payment Method"></div>
+    </div>
+</div>
+{% else %}
 <div class="container text-center text-white" style="padding-top: 90px; padding-left: 180px;">
     <div class="card text-dark" style="width: 800px;">
         <img src="{% static 'img/background3.jpg' %}" class="card-img-top rounded" alt="Background"
@@ -57,7 +65,8 @@
                 <tr>
                     <th scope="row">Cart Items</th>
                     {% for item in items %}
-                    <td><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="width: 100px;"></td>
+                    <td><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="width: 100px;">
+                    </td>
                     {% if not forloop.last %}{% endif %}{% endfor %}
                 </tr>
                 <tr>
@@ -85,11 +94,13 @@
             </table>
             <form action="{% url 'checkout' %}" method="POST">
                 {% csrf_token %}
-                <input class="btn btn-outline-success btn-lg" style="border-radius: 12px; width: 100px;" type="submit" value="Buy">
+                <input class="btn btn-outline-success btn-lg" style="border-radius: 12px; width: 100px;" type="submit"
+                       value="Buy">
             </form>
         </div>
     </div>
 </div>
+{% endif %}
 {% endif %}
 
 {% endblock%}
