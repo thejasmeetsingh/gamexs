@@ -78,6 +78,10 @@
                     <td colspan="{{ object.cart.items }}">{{ object.billing_address.get_address }}</td>
                 </tr>
                 <tr>
+                    <th scope="row">Payment Method</th>
+                    <td colspan="{{ object.cart.items }}">{{ billing_profile.default_card }} (<a class="text-success" href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}" style="text-decoration: none;">Change</a>)</td>
+                </tr>
+                <tr>
                     <th scope="row">Cart Total</th>
                     <td colspan="{{ object.cart.items }}">{{ object.cart.total }}</td>
                 </tr>

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.db.models.signals import post_save, pre_save
 from django.contrib.auth.models import User
 import stripe
@@ -33,6 +34,9 @@ class BillingProfile(models.Model):
 
     def get_cards(self):
         return self.card_set.all()
+    
+    def get_payment_method_url(self):
+        return reverse('payment_method')
 
     def has_card(self):
         card_qs = self.get_cards()
@@ -41,7 +45,7 @@ class BillingProfile(models.Model):
     def default_card(self):
         default_cards = self.get_cards().filter(default=True)
         if default_cards.exists():
-            return default_cards.fist()
+            return default_cards.first()
         return None
 
 
@@ -138,7 +142,15 @@ def billing_profile_created_receiver(sender, instance, *args, **kwargs):
 def user_created_receiver(sender, instance, created, *args, **kwargs):
     if created:
         BillingProfile.objects.get_or_create(user=instance)
+        
+        
+def new_card_post_save_receiver(sender, instance, *args, **kwargs):
+    if instance.default:
+        billing_profile = instance.billing_profile
+        qs = Card.objects.filter(billing_profile=billing_profile).exclude(pk=instance.pk)
+        qs.update(default=False)
 
 
 post_save.connect(user_created_receiver, sender=User)
 pre_save.connect(billing_profile_created_receiver, sender=BillingProfile)
+post_save.connect(new_card_post_save_receiver, sender=Card)
